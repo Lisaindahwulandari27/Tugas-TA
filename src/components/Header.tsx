@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { ChefHat, Package, Calculator, Chart3 } from 'lucide-react';
+import { ChefHat, Package, Calculator, BarChart3 } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
@@ -12,7 +11,7 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
     { id: 'dashboard', label: 'Dashboard', icon: ChefHat },
     { id: 'ingredients', label: 'Ingredients', icon: Package },
     { id: 'calculator', label: 'Calculator', icon: Calculator },
-    { id: 'analytics', label: 'Analytics', icon: Chart3 },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
   ];
 
   return (

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { useIngredients } from '../contexts/IngredientContext';
@@ -125,7 +124,7 @@ const Analytics = () => {
               height={100}
               fontSize={12}
             />
-            <YAxis formatter={(value) => `Rp ${value.toLocaleString('id-ID')}`} />
+            <YAxis tickFormatter={(value) => `Rp ${value.toLocaleString('id-ID')}`} />
             <Tooltip formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Cost per Portion']} />
             <Bar dataKey="costPerPortion" fill="#f97316" />
           </BarChart>
@@ -154,7 +153,7 @@ const Analytics = () => {
               <LineChart data={usageData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis formatter={(value) => `Rp ${value.toLocaleString('id-ID')}`} />
+                <YAxis tickFormatter={(value) => `Rp ${value.toLocaleString('id-ID')}`} />
                 <Tooltip formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Cost per Portion']} />
                 <Line type="monotone" dataKey="costPerPortion" stroke="#10b981" strokeWidth={2} />
               </LineChart>
