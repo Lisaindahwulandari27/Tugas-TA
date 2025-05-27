@@ -41,15 +41,14 @@ const PortionCalculator = () => {
 
     addUsageRecord(usageRecord);
     
-    // Show success message (you can implement toast notifications)
-    alert('Calculation saved successfully!');
+    alert('Perhitungan berhasil disimpan!');
   };
 
   const exportCalculation = () => {
     if (calculations.length === 0) return;
 
     const csvContent = [
-      ['Ingredient', 'Required Amount', 'Unit', 'Cost per Unit', 'Total Cost'],
+      ['Bahan Baku', 'Jumlah Diperlukan', 'Satuan', 'Biaya per Satuan', 'Total Biaya'],
       ...calculations.map(calc => [
         calc.ingredient.name,
         calc.requiredAmount,
@@ -65,20 +64,20 @@ const PortionCalculator = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `bakso-calculation-${portions}-portions-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `perhitungan-bakso-${portions}-porsi-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800">Portion Calculator</h2>
+      <h2 className="text-2xl font-bold text-gray-800">Kalkulator Porsi</h2>
 
       <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Number of Portions
+              Jumlah Porsi
             </label>
             <input
               type="number"
@@ -86,7 +85,7 @@ const PortionCalculator = () => {
               value={portions}
               onChange={(e) => setPortions(parseInt(e.target.value) || 1)}
               className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Enter number of portions"
+              placeholder="Masukkan jumlah porsi"
             />
           </div>
           <div>
@@ -95,7 +94,7 @@ const PortionCalculator = () => {
               className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
             >
               <Calculator className="h-5 w-5" />
-              <span>Calculate Requirements</span>
+              <span>Hitung Kebutuhan</span>
             </button>
           </div>
           <div className="flex space-x-2">
@@ -105,7 +104,7 @@ const PortionCalculator = () => {
               className="flex-1 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white px-4 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
             >
               <Save className="h-5 w-5" />
-              <span>Save</span>
+              <span>Simpan</span>
             </button>
             <button
               onClick={exportCalculation}
@@ -113,7 +112,7 @@ const PortionCalculator = () => {
               className="flex-1 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 text-white px-4 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
             >
               <Download className="h-5 w-5" />
-              <span>Export</span>
+              <span>Ekspor</span>
             </button>
           </div>
         </div>
@@ -123,18 +122,18 @@ const PortionCalculator = () => {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="px-6 py-4 bg-orange-50 border-b">
             <h3 className="text-lg font-semibold text-gray-800">
-              Requirements for {portions} Portion{portions > 1 ? 's' : ''}
+              Kebutuhan untuk {portions} Porsi
             </h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingredient</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Required Amount</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost per Unit</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Cost</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bahan Baku</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Diperlukan</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya per Satuan</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Biaya</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -163,7 +162,7 @@ const PortionCalculator = () => {
               <tfoot className="bg-orange-50">
                 <tr>
                   <td colSpan={4} className="px-6 py-4 text-right text-lg font-bold text-gray-800">
-                    Total Cost:
+                    Total Biaya:
                   </td>
                   <td className="px-6 py-4 text-lg font-bold text-orange-600">
                     Rp {getTotalCost().toLocaleString('id-ID')}
@@ -171,7 +170,7 @@ const PortionCalculator = () => {
                 </tr>
                 <tr>
                   <td colSpan={4} className="px-6 py-2 text-right text-sm font-medium text-gray-600">
-                    Cost per Portion:
+                    Biaya per Porsi:
                   </td>
                   <td className="px-6 py-2 text-sm font-medium text-orange-600">
                     Rp {(getTotalCost() / portions).toLocaleString('id-ID')}

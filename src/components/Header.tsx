@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ChefHat, Package, Calculator, BarChart3 } from 'lucide-react';
 
@@ -8,10 +9,10 @@ interface HeaderProps {
 
 const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
   const tabs = [
-    { id: 'dashboard', label: 'Dashboard', icon: ChefHat },
-    { id: 'ingredients', label: 'Ingredients', icon: Package },
-    { id: 'calculator', label: 'Calculator', icon: Calculator },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'dashboard', label: 'Dasbor', icon: ChefHat },
+    { id: 'ingredients', label: 'Bahan Baku', icon: Package },
+    { id: 'calculator', label: 'Kalkulator', icon: Calculator },
+    { id: 'analytics', label: 'Analitik', icon: BarChart3 },
   ];
 
   return (
@@ -24,7 +25,7 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-800">Bakso Adzkia</h1>
-              <p className="text-sm text-gray-600">Portion Management System</p>
+              <p className="text-sm text-gray-600">Sistem Manajemen Porsi</p>
             </div>
           </div>
         </div>

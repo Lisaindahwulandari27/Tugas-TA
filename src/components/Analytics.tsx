@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { useIngredients } from '../contexts/IngredientContext';
@@ -48,16 +49,16 @@ const Analytics = () => {
 
   return (
     <div className="space-y-8">
-      <h2 className="text-2xl font-bold text-gray-800">Analytics & Insights</h2>
+      <h2 className="text-2xl font-bold text-gray-800">Analitik & Wawasan</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Cost Efficiency Insights */}
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Cost Efficiency Insights</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Wawasan Efisiensi Biaya</h3>
           
           <div className="space-y-4">
             <div className="bg-red-50 p-4 rounded-lg">
-              <h4 className="font-medium text-red-800 mb-2">Most Expensive Ingredients</h4>
+              <h4 className="font-medium text-red-800 mb-2">Bahan Baku Termahal</h4>
               <div className="space-y-2">
                 {getMostExpensiveIngredients().map((ingredient, index) => (
                   <div key={ingredient.id} className="flex justify-between text-sm">
@@ -71,7 +72,7 @@ const Analytics = () => {
             </div>
 
             <div className="bg-green-50 p-4 rounded-lg">
-              <h4 className="font-medium text-green-800 mb-2">Most Cost-Effective Ingredients</h4>
+              <h4 className="font-medium text-green-800 mb-2">Bahan Baku Paling Efisien</h4>
               <div className="space-y-2">
                 {getLeastExpensiveIngredients().map((ingredient, index) => (
                   <div key={ingredient.id} className="flex justify-between text-sm">
@@ -88,7 +89,7 @@ const Analytics = () => {
 
         {/* Category Distribution */}
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Cost Distribution by Category</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Distribusi Biaya Berdasarkan Kategori</h3>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -113,7 +114,7 @@ const Analytics = () => {
 
       {/* Ingredient Cost Comparison */}
       <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Cost per Portion by Ingredient</h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Biaya per Porsi Berdasarkan Bahan Baku</h3>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={ingredientCostData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -125,7 +126,7 @@ const Analytics = () => {
               fontSize={12}
             />
             <YAxis tickFormatter={(value) => `Rp ${value.toLocaleString('id-ID')}`} />
-            <Tooltip formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Cost per Portion']} />
+            <Tooltip formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Biaya per Porsi']} />
             <Bar dataKey="costPerPortion" fill="#f97316" />
           </BarChart>
         </ResponsiveContainer>
@@ -135,7 +136,7 @@ const Analytics = () => {
       {usageData.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Production Volume Trend</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Tren Volume Produksi</h3>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={usageData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -148,13 +149,13 @@ const Analytics = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Cost per Portion Trend</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Tren Biaya per Porsi</h3>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={usageData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis tickFormatter={(value) => `Rp ${value.toLocaleString('id-ID')}`} />
-                <Tooltip formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Cost per Portion']} />
+                <Tooltip formatter={(value) => [`Rp ${Number(value).toLocaleString('id-ID')}`, 'Biaya per Porsi']} />
                 <Line type="monotone" dataKey="costPerPortion" stroke="#10b981" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>

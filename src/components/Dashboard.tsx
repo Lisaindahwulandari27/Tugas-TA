@@ -15,40 +15,40 @@ const Dashboard = () => {
 
   const stats = [
     {
-      title: 'Total Ingredients',
+      title: 'Total Bahan Baku',
       value: totalIngredients,
       icon: Package,
       color: 'bg-blue-500',
-      change: '+2 this week'
+      change: '+2 minggu ini'
     },
     {
-      title: 'Portions Today',
+      title: 'Porsi Hari Ini',
       value: totalPortionsToday,
       icon: Calculator,
       color: 'bg-green-500',
-      change: '+15% from yesterday'
+      change: '+15% dari kemarin'
     },
     {
-      title: 'Avg Cost/Portion',
+      title: 'Rata-rata Biaya/Porsi',
       value: `Rp ${avgCostPerPortion.toLocaleString('id-ID')}`,
       icon: DollarSign,
       color: 'bg-orange-500',
-      change: '-5% this month'
+      change: '-5% bulan ini'
     },
     {
-      title: 'Total Production Cost',
+      title: 'Total Biaya Produksi',
       value: `Rp ${totalRevenue.toLocaleString('id-ID')}`,
       icon: TrendingUp,
       color: 'bg-purple-500',
-      change: '+12% this month'
+      change: '+12% bulan ini'
     }
   ];
 
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">Welcome to Bakso Adzkia</h2>
-        <p className="text-lg text-gray-600">Manage your ingredients and optimize your portions efficiently</p>
+        <h2 className="text-3xl font-bold text-gray-800 mb-2">Selamat Datang di Bakso Adzkia</h2>
+        <p className="text-lg text-gray-600">Kelola bahan baku dan optimalkan porsi dengan efisien</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -71,17 +71,17 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">Aktivitas Terbaru</h3>
           <div className="space-y-4">
             {usageHistory.slice(0, 3).map((record) => (
               <div key={record.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <p className="font-medium text-gray-800">{record.portions} portions produced</p>
+                  <p className="font-medium text-gray-800">{record.portions} porsi diproduksi</p>
                   <p className="text-sm text-gray-600">{new Date(record.date).toLocaleDateString('id-ID')}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-orange-600">Rp {record.totalCost.toLocaleString('id-ID')}</p>
-                  <p className="text-xs text-gray-500">Total Cost</p>
+                  <p className="text-xs text-gray-500">Total Biaya</p>
                 </div>
               </div>
             ))}
@@ -89,7 +89,7 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">Top Ingredients by Cost</h3>
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">Bahan Baku Termahal</h3>
           <div className="space-y-4">
             {ingredients
               .sort((a, b) => (b.costPerUnit * b.amountPerPortion) - (a.costPerUnit * a.amountPerPortion))
@@ -98,13 +98,13 @@ const Dashboard = () => {
                 <div key={ingredient.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
                     <p className="font-medium text-gray-800">{ingredient.name}</p>
-                    <p className="text-sm text-gray-600">{ingredient.amountPerPortion} {ingredient.unit} per portion</p>
+                    <p className="text-sm text-gray-600">{ingredient.amountPerPortion} {ingredient.unit} per porsi</p>
                   </div>
                   <div className="text-right">
                     <p className="font-bold text-red-600">
                       Rp {(ingredient.costPerUnit * ingredient.amountPerPortion).toLocaleString('id-ID')}
                     </p>
-                    <p className="text-xs text-gray-500">per portion</p>
+                    <p className="text-xs text-gray-500">per porsi</p>
                   </div>
                 </div>
               ))}

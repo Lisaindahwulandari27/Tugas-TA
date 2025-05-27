@@ -12,11 +12,11 @@ const IngredientManager = () => {
     unit: '',
     costPerUnit: 0,
     amountPerPortion: 0,
-    category: 'Main'
+    category: 'Utama'
   });
 
-  const categories = ['Main', 'Carbohydrate', 'Vegetable', 'Seasoning', 'Broth', 'Condiment'];
-  const units = ['grams', 'ml', 'pieces', 'kg', 'liter', 'tbsp', 'tsp'];
+  const categories = ['Utama', 'Karbohidrat', 'Sayuran', 'Bumbu', 'Kuah', 'Pelengkap'];
+  const units = ['gram', 'ml', 'buah', 'kg', 'liter', 'sdm', 'sdt'];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ const IngredientManager = () => {
       unit: '',
       costPerUnit: 0,
       amountPerPortion: 0,
-      category: 'Main'
+      category: 'Utama'
     });
   };
 
@@ -61,49 +61,49 @@ const IngredientManager = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-800">Ingredient Management</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Manajemen Bahan Baku</h2>
         <button
           onClick={() => setIsAddingNew(true)}
           className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
         >
           <Plus className="h-5 w-5" />
-          <span>Add Ingredient</span>
+          <span>Tambah Bahan Baku</span>
         </button>
       </div>
 
       {(isAddingNew || editingId) && (
         <div className="bg-white rounded-xl shadow-lg p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            {editingId ? 'Edit Ingredient' : 'Add New Ingredient'}
+            {editingId ? 'Edit Bahan Baku' : 'Tambah Bahan Baku Baru'}
           </h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Nama</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                placeholder="Ingredient name"
+                placeholder="Nama bahan baku"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Satuan</label>
               <select
                 required
                 value={formData.unit}
                 onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
-                <option value="">Select unit</option>
+                <option value="">Pilih satuan</option>
                 {units.map(unit => (
                   <option key={unit} value={unit}>{unit}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
               <select
                 required
                 value={formData.category}
@@ -116,7 +116,7 @@ const IngredientManager = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Cost per Unit (Rp)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Biaya per Satuan (Rp)</label>
               <input
                 type="number"
                 required
@@ -129,7 +129,7 @@ const IngredientManager = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Amount per Portion</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Jumlah per Porsi</label>
               <input
                 type="number"
                 required
@@ -147,7 +147,7 @@ const IngredientManager = () => {
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
               >
                 <Save className="h-4 w-4" />
-                <span>Save</span>
+                <span>Simpan</span>
               </button>
               <button
                 type="button"
@@ -155,7 +155,7 @@ const IngredientManager = () => {
                 className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors duration-200"
               >
                 <X className="h-4 w-4" />
-                <span>Cancel</span>
+                <span>Batal</span>
               </button>
             </div>
           </form>
@@ -167,13 +167,13 @@ const IngredientManager = () => {
           <table className="w-full">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost per Unit</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount per Portion</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cost per Portion</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Satuan</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya per Satuan</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah per Porsi</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya per Porsi</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
