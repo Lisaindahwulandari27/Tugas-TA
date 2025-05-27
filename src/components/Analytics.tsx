@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 import { useIngredients } from '../contexts/IngredientContext';
+import AprioriAnalysisComponent from './AprioriAnalysis';
 
 const Analytics = () => {
   const { ingredients, usageHistory } = useIngredients();
@@ -50,6 +50,9 @@ const Analytics = () => {
   return (
     <div className="space-y-8">
       <h2 className="text-2xl font-bold text-gray-800">Analitik & Wawasan</h2>
+
+      {/* Apriori Analysis Section */}
+      <AprioriAnalysisComponent />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Cost Efficiency Insights */}
