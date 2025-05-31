@@ -1,16 +1,19 @@
 
 import React, { useState } from 'react';
-import { Calculator, Save, Download } from 'lucide-react';
+import { Calculator, Save, Download, Loader2 } from 'lucide-react';
 import { useIngredients } from '../contexts/IngredientContext';
+import { useToast } from "@/hooks/use-toast";
 
 const PortionCalculator = () => {
-  const { ingredients, addUsageRecord } = useIngredients();
+  const { ingredients, addUsageRecord, loading } = useIngredients();
+  const { toast } = useToast();
   const [portions, setPortions] = useState<number>(1);
   const [calculations, setCalculations] = useState<Array<{
     ingredient: any;
     requiredAmount: number;
     cost: number;
   }>>([]);
+  const [saving, setSaving] = useState(false);
 
   const calculateRequirements = () => {
     const results = ingredients.map(ingredient => ({
@@ -19,36 +22,54 @@ const PortionCalculator = () => {
       cost: ingredient.costPerUnit * ingredient.amountPerPortion * portions
     }));
     setCalculations(results);
+    toast({
+      title: "Perhitungan Selesai",
+      description: `Kebutuhan untuk ${portions} porsi berhasil dihitung`,
+    });
   };
 
   const getTotalCost = () => {
     return calculations.reduce((sum, calc) => sum + calc.cost, 0);
   };
 
-  const saveCalculation = () => {
+  const saveCalculation = async () => {
     if (calculations.length === 0) return;
 
-    const usageRecord = {
-      date: new Date().toISOString().split('T')[0],
-      portions,
-      ingredients: calculations.map(calc => ({
-        ingredientId: calc.ingredient.id,
-        amount: calc.requiredAmount,
-        cost: calc.cost
-      })),
-      totalCost: getTotalCost()
-    };
+    setSaving(true);
+    try {
+      const usageRecord = {
+        date: new Date().toISOString().split('T')[0],
+        portions,
+        ingredients: calculations.map(calc => ({
+          ingredientId: calc.ingredient.id,
+          amount: calc.requiredAmount,
+          cost: calc.cost
+        })),
+        totalCost: getTotalCost()
+      };
 
-    addUsageRecord(usageRecord);
-    
-    alert('Perhitungan berhasil disimpan!');
+      await addUsageRecord(usageRecord);
+      
+      toast({
+        title: "Berhasil Disimpan",
+        description: "Perhitungan berhasil disimpan ke riwayat produksi",
+      });
+    } catch (error) {
+      toast({
+        title: "Gagal Menyimpan",
+        description: "Terjadi kesalahan saat menyimpan perhitungan",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const exportCalculation = () => {
     if (calculations.length === 0) return;
 
     const csvContent = [
-      ['Bahan Baku', 'Jumlah Diperlukan', 'Satuan', 'Biaya per Satuan', 'Total Biaya'],
+      ['Bahan Baku', 'Jumlah Diperlukan', 'Satuan', 'Harga per Satuan', 'Total Biaya'],
       ...calculations.map(calc => [
         calc.ingredient.name,
         calc.requiredAmount,
@@ -67,7 +88,21 @@ const PortionCalculator = () => {
     a.download = `perhitungan-bakso-${portions}-porsi-${new Date().toISOString().split('T')[0]}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
+
+    toast({
+      title: "File Berhasil Diunduh",
+      description: "Data perhitungan telah diunduh dalam format CSV",
+    });
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+        <span className="ml-2 text-gray-600">Memuat data bahan baku...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -91,7 +126,8 @@ const PortionCalculator = () => {
           <div>
             <button
               onClick={calculateRequirements}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
+              disabled={ingredients.length === 0}
+              className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
             >
               <Calculator className="h-5 w-5" />
               <span>Hitung Kebutuhan</span>
@@ -100,11 +136,15 @@ const PortionCalculator = () => {
           <div className="flex space-x-2">
             <button
               onClick={saveCalculation}
-              disabled={calculations.length === 0}
+              disabled={calculations.length === 0 || saving}
               className="flex-1 bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white px-4 py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors duration-200"
             >
-              <Save className="h-5 w-5" />
-              <span>Simpan</span>
+              {saving ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Save className="h-5 w-5" />
+              )}
+              <span>{saving ? 'Menyimpan...' : 'Simpan'}</span>
             </button>
             <button
               onClick={exportCalculation}
@@ -117,6 +157,14 @@ const PortionCalculator = () => {
           </div>
         </div>
       </div>
+
+      {ingredients.length === 0 && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <p className="text-yellow-800">
+            Belum ada data bahan baku. Silakan tambahkan bahan baku terlebih dahulu di menu Manajemen Bahan Baku.
+          </p>
+        </div>
+      )}
 
       {calculations.length > 0 && (
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -132,7 +180,7 @@ const PortionCalculator = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bahan Baku</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah Diperlukan</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya per Satuan</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga per Satuan</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Biaya</th>
                 </tr>
               </thead>

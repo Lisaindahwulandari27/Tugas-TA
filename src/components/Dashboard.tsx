@@ -1,10 +1,19 @@
 
 import React from 'react';
-import { Package, Calculator, TrendingUp, DollarSign } from 'lucide-react';
+import { Package, Calculator, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
 import { useIngredients } from '../contexts/IngredientContext';
 
 const Dashboard = () => {
-  const { ingredients, usageHistory } = useIngredients();
+  const { ingredients, usageHistory, loading } = useIngredients();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+        <span className="ml-2 text-gray-600">Memuat data dashboard...</span>
+      </div>
+    );
+  }
 
   const totalIngredients = ingredients.length;
   const totalPortionsToday = usageHistory.length > 0 ? usageHistory[0].portions : 0;
@@ -19,28 +28,28 @@ const Dashboard = () => {
       value: totalIngredients,
       icon: Package,
       color: 'bg-blue-500',
-      change: '+2 minggu ini'
+      change: `${totalIngredients} jenis bahan`
     },
     {
-      title: 'Porsi Hari Ini',
+      title: 'Porsi Terbaru',
       value: totalPortionsToday,
       icon: Calculator,
       color: 'bg-green-500',
-      change: '+15% dari kemarin'
+      change: 'Produksi terakhir'
     },
     {
       title: 'Rata-rata Biaya/Porsi',
-      value: `Rp ${avgCostPerPortion.toLocaleString('id-ID')}`,
+      value: `Rp ${Math.round(avgCostPerPortion).toLocaleString('id-ID')}`,
       icon: DollarSign,
       color: 'bg-orange-500',
-      change: '-5% bulan ini'
+      change: 'Per porsi bakso'
     },
     {
       title: 'Total Biaya Produksi',
       value: `Rp ${totalRevenue.toLocaleString('id-ID')}`,
       icon: TrendingUp,
       color: 'bg-purple-500',
-      change: '+12% bulan ini'
+      change: 'Riwayat produksi'
     }
   ];
 
@@ -85,6 +94,11 @@ const Dashboard = () => {
                 </div>
               </div>
             ))}
+            {usageHistory.length === 0 && (
+              <div className="text-center py-4 text-gray-500">
+                Belum ada riwayat produksi
+              </div>
+            )}
           </div>
         </div>
 
@@ -108,6 +122,11 @@ const Dashboard = () => {
                   </div>
                 </div>
               ))}
+            {ingredients.length === 0 && (
+              <div className="text-center py-4 text-gray-500">
+                Belum ada data bahan baku
+              </div>
+            )}
           </div>
         </div>
       </div>

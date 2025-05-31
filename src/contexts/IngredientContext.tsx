@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface Ingredient {
   id: string;
@@ -25,10 +26,12 @@ export interface UsageRecord {
 interface IngredientContextType {
   ingredients: Ingredient[];
   usageHistory: UsageRecord[];
-  addIngredient: (ingredient: Omit<Ingredient, 'id'>) => void;
-  updateIngredient: (id: string, ingredient: Partial<Ingredient>) => void;
-  deleteIngredient: (id: string) => void;
-  addUsageRecord: (record: Omit<UsageRecord, 'id'>) => void;
+  loading: boolean;
+  addIngredient: (ingredient: Omit<Ingredient, 'id'>) => Promise<void>;
+  updateIngredient: (id: string, ingredient: Partial<Ingredient>) => Promise<void>;
+  deleteIngredient: (id: string) => Promise<void>;
+  addUsageRecord: (record: Omit<UsageRecord, 'id'>) => Promise<void>;
+  refreshData: () => Promise<void>;
 }
 
 const IngredientContext = createContext<IngredientContextType | undefined>(undefined);
@@ -42,100 +45,145 @@ export const useIngredients = () => {
 };
 
 export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [ingredients, setIngredients] = useState<Ingredient[]>([
-    {
-      id: '1',
-      name: 'Beef Meatballs',
-      unit: 'pieces',
-      costPerUnit: 500,
-      amountPerPortion: 6,
-      category: 'Main'
-    },
-    {
-      id: '2',
-      name: 'Wheat Noodles',
-      unit: 'grams',
-      costPerUnit: 15,
-      amountPerPortion: 100,
-      category: 'Carbohydrate'
-    },
-    {
-      id: '3',
-      name: 'Beef Broth',
-      unit: 'ml',
-      costPerUnit: 8,
-      amountPerPortion: 250,
-      category: 'Broth'
-    },
-    {
-      id: '4',
-      name: 'Bean Sprouts',
-      unit: 'grams',
-      costPerUnit: 20,
-      amountPerPortion: 50,
-      category: 'Vegetable'
-    },
-    {
-      id: '5',
-      name: 'Green Onions',
-      unit: 'grams',
-      costPerUnit: 30,
-      amountPerPortion: 10,
-      category: 'Seasoning'
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [usageHistory, setUsageHistory] = useState<UsageRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchIngredients = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('ingredients')
+        .select('*')
+        .order('name');
+
+      if (error) throw error;
+
+      const formattedIngredients = data.map(item => ({
+        id: item.id,
+        name: item.name,
+        unit: item.unit,
+        costPerUnit: parseFloat(item.cost_per_unit),
+        amountPerPortion: parseFloat(item.amount_per_portion),
+        category: item.category
+      }));
+
+      setIngredients(formattedIngredients);
+    } catch (error) {
+      console.error('Error fetching ingredients:', error);
     }
-  ]);
+  };
 
-  const [usageHistory, setUsageHistory] = useState<UsageRecord[]>([
-    {
-      id: '1',
-      date: '2024-05-25',
-      portions: 50,
-      ingredients: [
-        { ingredientId: '1', amount: 300, cost: 150000 },
-        { ingredientId: '2', amount: 5000, cost: 75000 },
-        { ingredientId: '3', amount: 12500, cost: 100000 },
-      ],
-      totalCost: 325000
-    },
-    {
-      id: '2',
-      date: '2024-05-24',
-      portions: 35,
-      ingredients: [
-        { ingredientId: '1', amount: 210, cost: 105000 },
-        { ingredientId: '2', amount: 3500, cost: 52500 },
-        { ingredientId: '3', amount: 8750, cost: 70000 },
-      ],
-      totalCost: 227500
+  const fetchUsageHistory = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('usage_history')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedHistory = data.map(item => ({
+        id: item.id,
+        date: item.date,
+        portions: item.portions,
+        totalCost: parseFloat(item.total_cost),
+        ingredients: item.ingredients as Array<{
+          ingredientId: string;
+          amount: number;
+          cost: number;
+        }>
+      }));
+
+      setUsageHistory(formattedHistory);
+    } catch (error) {
+      console.error('Error fetching usage history:', error);
     }
-  ]);
-
-  const addIngredient = (ingredient: Omit<Ingredient, 'id'>) => {
-    const newIngredient = {
-      ...ingredient,
-      id: Date.now().toString(),
-    };
-    setIngredients(prev => [...prev, newIngredient]);
   };
 
-  const updateIngredient = (id: string, updatedIngredient: Partial<Ingredient>) => {
-    setIngredients(prev =>
-      prev.map(ingredient =>
-        ingredient.id === id ? { ...ingredient, ...updatedIngredient } : ingredient
-      )
-    );
+  const refreshData = async () => {
+    setLoading(true);
+    await Promise.all([fetchIngredients(), fetchUsageHistory()]);
+    setLoading(false);
   };
 
-  const deleteIngredient = (id: string) => {
-    setIngredients(prev => prev.filter(ingredient => ingredient.id !== id));
+  useEffect(() => {
+    refreshData();
+  }, []);
+
+  const addIngredient = async (ingredient: Omit<Ingredient, 'id'>) => {
+    try {
+      const { error } = await supabase
+        .from('ingredients')
+        .insert({
+          name: ingredient.name,
+          unit: ingredient.unit,
+          cost_per_unit: ingredient.costPerUnit,
+          amount_per_portion: ingredient.amountPerPortion,
+          category: ingredient.category
+        });
+
+      if (error) throw error;
+      await fetchIngredients();
+    } catch (error) {
+      console.error('Error adding ingredient:', error);
+      throw error;
+    }
   };
 
-  const addUsageRecord = (record: Omit<UsageRecord, 'id'>) => {
-    const newRecord = {
-      ...record,
-      id: Date.now().toString(),
-    };
-    setUsageHistory(prev => [newRecord, ...prev]);
+  const updateIngredient = async (id: string, updatedIngredient: Partial<Ingredient>) => {
+    try {
+      const updateData: any = {};
+      if (updatedIngredient.name) updateData.name = updatedIngredient.name;
+      if (updatedIngredient.unit) updateData.unit = updatedIngredient.unit;
+      if (updatedIngredient.costPerUnit !== undefined) updateData.cost_per_unit = updatedIngredient.costPerUnit;
+      if (updatedIngredient.amountPerPortion !== undefined) updateData.amount_per_portion = updatedIngredient.amountPerPortion;
+      if (updatedIngredient.category) updateData.category = updatedIngredient.category;
+
+      const { error } = await supabase
+        .from('ingredients')
+        .update(updateData)
+        .eq('id', id);
+
+      if (error) throw error;
+      await fetchIngredients();
+    } catch (error) {
+      console.error('Error updating ingredient:', error);
+      throw error;
+    }
+  };
+
+  const deleteIngredient = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('ingredients')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      await fetchIngredients();
+    } catch (error) {
+      console.error('Error deleting ingredient:', error);
+      throw error;
+    }
+  };
+
+  const addUsageRecord = async (record: Omit<UsageRecord, 'id'>) => {
+    try {
+      const { error } = await supabase
+        .from('usage_history')
+        .insert({
+          date: record.date,
+          portions: record.portions,
+          total_cost: record.totalCost,
+          ingredients: record.ingredients
+        });
+
+      if (error) throw error;
+      await fetchUsageHistory();
+    } catch (error) {
+      console.error('Error adding usage record:', error);
+      throw error;
+    }
   };
 
   return (
@@ -143,10 +191,12 @@ export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       value={{
         ingredients,
         usageHistory,
+        loading,
         addIngredient,
         updateIngredient,
         deleteIngredient,
         addUsageRecord,
+        refreshData,
       }}
     >
       {children}
