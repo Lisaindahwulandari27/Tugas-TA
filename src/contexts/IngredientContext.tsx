@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -62,8 +61,8 @@ export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         id: item.id,
         name: item.name,
         unit: item.unit,
-        costPerUnit: parseFloat(item.cost_per_unit),
-        amountPerPortion: parseFloat(item.amount_per_portion),
+        costPerUnit: typeof item.cost_per_unit === 'number' ? item.cost_per_unit : parseFloat(item.cost_per_unit),
+        amountPerPortion: typeof item.amount_per_portion === 'number' ? item.amount_per_portion : parseFloat(item.amount_per_portion),
         category: item.category
       }));
 
@@ -86,7 +85,7 @@ export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         id: item.id,
         date: item.date,
         portions: item.portions,
-        totalCost: parseFloat(item.total_cost),
+        totalCost: typeof item.total_cost === 'number' ? item.total_cost : parseFloat(item.total_cost),
         ingredients: item.ingredients as Array<{
           ingredientId: string;
           amount: number;
