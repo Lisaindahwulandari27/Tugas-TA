@@ -1,6 +1,8 @@
 
 import React from 'react';
-import { ChefHat, Package, Calculator, BarChart3 } from 'lucide-react';
+import { ChefHat, Package, Calculator, BarChart3, LogOut, User } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { useAuth } from '../contexts/AuthContext';
 
 interface HeaderProps {
   activeTab: string;
@@ -8,12 +10,18 @@ interface HeaderProps {
 }
 
 const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
+  const { user, logout } = useAuth();
+
   const tabs = [
     { id: 'dashboard', label: 'Dasbor', icon: ChefHat },
     { id: 'ingredients', label: 'Bahan Baku', icon: Package },
     { id: 'calculator', label: 'Kalkulator', icon: Calculator },
     { id: 'analytics', label: 'Analitik', icon: BarChart3 },
   ];
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <header className="bg-white shadow-lg border-b-4 border-orange-400">
@@ -28,6 +36,27 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
               <p className="text-sm text-gray-600">Sistem Manajemen Porsi</p>
             </div>
           </div>
+          
+          {user && (
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 bg-orange-50 px-3 py-2 rounded-lg">
+                <User className="h-4 w-4 text-orange-600" />
+                <div className="text-sm">
+                  <p className="font-medium text-gray-800">{user.name}</p>
+                  <p className="text-xs text-gray-600 capitalize">{user.role}</p>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleLogout}
+                className="hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Keluar
+              </Button>
+            </div>
+          )}
         </div>
         <nav className="flex space-x-1 pb-4">
           {tabs.map((tab) => {

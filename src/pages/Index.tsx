@@ -1,15 +1,21 @@
 
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import Header from '../components/Header';
 import Dashboard from '../components/Dashboard';
 import IngredientManager from '../components/IngredientManager';
 import PortionCalculator from '../components/PortionCalculator';
 import Analytics from '../components/Analytics';
+import LoginForm from '../components/LoginForm';
 import { IngredientProvider } from '../contexts/IngredientContext';
+import { AuthProvider, useAuth } from '../contexts/AuthContext';
 
-const Index = () => {
+const AppContent = () => {
   const [activeTab, setActiveTab] = React.useState('dashboard');
+  const { user, login, isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <LoginForm onLoginSuccess={login} />;
+  }
 
   return (
     <IngredientProvider>
@@ -23,6 +29,14 @@ const Index = () => {
         </main>
       </div>
     </IngredientProvider>
+  );
+};
+
+const Index = () => {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 };
 
