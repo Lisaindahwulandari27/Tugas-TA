@@ -1,6 +1,5 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 
 interface User {
   id: string;
@@ -38,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (storedUser) {
       try {
         const userData = JSON.parse(storedUser);
+        console.log('Loaded user from localStorage:', userData);
         setUser(userData);
       } catch (error) {
         console.error('Error parsing stored user:', error);
@@ -47,11 +47,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (userData: User) => {
+    console.log('Logging in user:', userData);
     setUser(userData);
     localStorage.setItem('currentUser', JSON.stringify(userData));
   };
 
   const logout = () => {
+    console.log('Logging out user');
     setUser(null);
     localStorage.removeItem('currentUser');
   };

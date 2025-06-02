@@ -22,31 +22,46 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
     setLoading(true);
 
     try {
-      // Query user from our custom users table
-      const { data: user, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', email)
-        .single();
+      // Query user from our custom users table using rpc or direct query
+      const { data: users, error } = await supabase
+        .rpc('get_user_by_email', { user_email: email });
 
-      if (error || !user) {
-        toast({
-          title: "Login Gagal",
-          description: "Email tidak ditemukan dalam sistem",
-          variant: "destructive",
-        });
-        return;
+      if (error) {
+        // Fallback: try direct query if RPC doesn't exist
+        const { data: fallbackUsers, error: fallbackError } = await supabase
+          .from('users' as any)
+          .select('*')
+          .eq('email', email)
+          .single();
+
+        if (fallbackError || !fallbackUsers) {
+          toast({
+            title: "Login Gagal",
+            description: "Email tidak ditemukan dalam sistem",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        onLoginSuccess(fallbackUsers);
+      } else {
+        if (!users || users.length === 0) {
+          toast({
+            title: "Login Gagal",
+            description: "Email tidak ditemukan dalam sistem",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        onLoginSuccess(users[0]);
       }
-
-      // Store user data in localStorage for session management
-      localStorage.setItem('currentUser', JSON.stringify(user));
       
       toast({
         title: "Login Berhasil",
-        description: `Selamat datang, ${user.name}!`,
+        description: `Selamat datang!`,
       });
 
-      onLoginSuccess(user);
     } catch (error) {
       console.error('Login error:', error);
       toast({
