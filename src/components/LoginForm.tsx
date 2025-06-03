@@ -12,6 +12,16 @@ interface LoginFormProps {
   onLoginSuccess: (user: any) => void;
 }
 
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  role: string;
+  created_at: string;
+  updated_at: string;
+}
+
 const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -26,9 +36,9 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
 
     try {
       const { data: users, error } = await supabase
-        .from('users')
+        .from('users' as any)
         .select('*')
-        .eq('email', email);
+        .eq('email', email) as { data: UserData[] | null; error: any };
 
       if (error) {
         console.error('Query error:', error);
@@ -74,9 +84,9 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
     try {
       // Check if email already exists
       const { data: existingUsers, error: checkError } = await supabase
-        .from('users')
+        .from('users' as any)
         .select('*')
-        .eq('email', email);
+        .eq('email', email) as { data: UserData[] | null; error: any };
 
       if (checkError) {
         console.error('Check error:', checkError);
@@ -99,7 +109,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
 
       // Create new user
       const { data: newUser, error: insertError } = await supabase
-        .from('users')
+        .from('users' as any)
         .insert([
           {
             name,
@@ -109,7 +119,7 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
           }
         ])
         .select()
-        .single();
+        .single() as { data: UserData | null; error: any };
 
       if (insertError) {
         console.error('Insert error:', insertError);
