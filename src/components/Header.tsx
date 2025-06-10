@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ChefHat, Package, Calculator, BarChart3, LogOut, User } from 'lucide-react';
+import { Package, Calculator, BarChart3, LogOut, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '../contexts/AuthContext';
 
@@ -13,7 +13,7 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
   const { user, logout } = useAuth();
 
   const tabs = [
-    { id: 'dashboard', label: 'Dasbor', icon: ChefHat },
+    { id: 'dashboard', label: 'Dasbor', icon: Package },
     { id: 'ingredients', label: 'Bahan Baku', icon: Package },
     { id: 'calculator', label: 'Kalkulator', icon: Calculator },
     { id: 'analytics', label: 'Analitik', icon: BarChart3 },
@@ -28,11 +28,15 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center space-x-3">
-            <div className="bg-gradient-to-r from-orange-500 to-amber-500 p-3 rounded-full">
-              <ChefHat className="h-8 w-8 text-white" />
+            <div className="bg-white p-2 rounded-full">
+              <img 
+                src="/lovable-uploads/6e27bd9a-935f-4cf1-8d6e-8dcf94eb77e3.png" 
+                alt="Warung Bakso Adzkia Logo" 
+                className="h-12 w-auto"
+              />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">Bakso Adzkia</h1>
+              <h1 className="text-2xl font-bold text-gray-800">Warung Bakso Adzkia</h1>
               <p className="text-sm text-gray-600">Sistem Manajemen Porsi</p>
             </div>
           </div>
