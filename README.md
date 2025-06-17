@@ -1,7 +1,7 @@
 # Welcome My Web Apriori Project
 ## Project info
 
-**URL**: https://lovable.dev/projects/19cf9075-ae94-4f17-8a24-f9af8bd2a37f
+**URL**: https://apriori.tipolnes.com
 
 ## How can I edit this code?
 
