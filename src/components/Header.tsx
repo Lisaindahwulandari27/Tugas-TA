@@ -30,7 +30,7 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
           <div className="flex items-center space-x-3">
             <div className="bg-white p-2 rounded-full">
               <img 
-                src="/uploads/6e27bd9a-935f-4cf1-8d6e-8dcf94eb77e3.png" 
+                src="/lovable-uploads/6e27bd9a-935f-4cf1-8d6e-8dcf94eb77e3.png" 
                 alt="Warung Bakso Adzkia Logo" 
                 className="h-12 w-auto"
               />
