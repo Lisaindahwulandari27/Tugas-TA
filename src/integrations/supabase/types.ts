@@ -21,7 +21,6 @@ export type Database = {
           cost_per_unit: number
           created_at: string
           id: string
-          initial_stock: number
           name: string
           unit: string
           updated_at: string
@@ -32,7 +31,6 @@ export type Database = {
           cost_per_unit: number
           created_at?: string
           id?: string
-          initial_stock?: number
           name: string
           unit: string
           updated_at?: string
@@ -43,7 +41,6 @@ export type Database = {
           cost_per_unit?: number
           created_at?: string
           id?: string
-          initial_stock?: number
           name?: string
           unit?: string
           updated_at?: string
