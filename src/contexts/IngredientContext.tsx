@@ -7,6 +7,7 @@ export interface Ingredient {
   unit: string;
   costPerUnit: number;
   amountPerPortion: number;
+  initialStock: number;
   category: string;
 }
 
@@ -63,6 +64,7 @@ export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         unit: item.unit,
         costPerUnit: typeof item.cost_per_unit === 'number' ? item.cost_per_unit : parseFloat(item.cost_per_unit),
         amountPerPortion: typeof item.amount_per_portion === 'number' ? item.amount_per_portion : parseFloat(item.amount_per_portion),
+        initialStock: typeof item.initial_stock === 'number' ? item.initial_stock : parseFloat(item.initial_stock),
         category: item.category
       }));
 
@@ -118,6 +120,7 @@ export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           unit: ingredient.unit,
           cost_per_unit: ingredient.costPerUnit,
           amount_per_portion: ingredient.amountPerPortion,
+          initial_stock: ingredient.initialStock,
           category: ingredient.category
         });
 
@@ -136,6 +139,7 @@ export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       if (updatedIngredient.unit) updateData.unit = updatedIngredient.unit;
       if (updatedIngredient.costPerUnit !== undefined) updateData.cost_per_unit = updatedIngredient.costPerUnit;
       if (updatedIngredient.amountPerPortion !== undefined) updateData.amount_per_portion = updatedIngredient.amountPerPortion;
+      if (updatedIngredient.initialStock !== undefined) updateData.initial_stock = updatedIngredient.initialStock;
       if (updatedIngredient.category) updateData.category = updatedIngredient.category;
 
       const { error } = await supabase

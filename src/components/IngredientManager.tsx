@@ -15,6 +15,7 @@ const IngredientManager = () => {
     unit: '',
     costPerUnit: 0,
     amountPerPortion: 0,
+    initialStock: 0,
     category: 'Utama'
   });
 
@@ -59,6 +60,7 @@ const IngredientManager = () => {
       unit: '',
       costPerUnit: 0,
       amountPerPortion: 0,
+      initialStock: 0,
       category: 'Utama'
     });
   };
@@ -69,6 +71,7 @@ const IngredientManager = () => {
       unit: ingredient.unit,
       costPerUnit: ingredient.costPerUnit,
       amountPerPortion: ingredient.amountPerPortion,
+      initialStock: ingredient.initialStock,
       category: ingredient.category
     });
     setEditingId(ingredient.id);
@@ -196,6 +199,20 @@ const IngredientManager = () => {
                 disabled={submitting}
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Stok Awal</label>
+              <input
+                type="number"
+                required
+                min="0"
+                step="0.01"
+                value={formData.initialStock}
+                onChange={(e) => setFormData({ ...formData, initialStock: parseFloat(e.target.value) || 0 })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="0"
+                disabled={submitting}
+              />
+            </div>
             <div className="flex items-end space-x-2">
               <button
                 type="submit"
@@ -232,6 +249,7 @@ const IngredientManager = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Satuan</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga per Satuan</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok Awal</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah per Porsi</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya per Porsi</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -251,6 +269,9 @@ const IngredientManager = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ingredient.unit}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     Rp {ingredient.costPerUnit.toLocaleString('id-ID')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {ingredient.initialStock} {ingredient.unit}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {ingredient.amountPerPortion} {ingredient.unit}
