@@ -13,10 +13,10 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
   const { user, logout } = useAuth();
 
   const tabs = [
-    { id: 'dashboard', label: 'Dasbor', icon: Package },
+    { id: 'dashboard', label: 'Dashboard', icon: Package },
     { id: 'ingredients', label: 'Bahan Baku', icon: Package },
     { id: 'calculator', label: 'Kalkulator', icon: Calculator },
-    { id: 'analytics', label: 'Analitik', icon: BarChart3 },
+    { id: 'analytics', label: 'Analisis', icon: BarChart3 },
   ];
 
   const handleLogout = () => {
