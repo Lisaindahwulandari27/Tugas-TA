@@ -3,7 +3,11 @@ import React from 'react';
 import { Package, Calculator, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
 import { useIngredients } from '../contexts/IngredientContext';
 
-const Dashboard = () => {
+interface DashboardProps {
+  setActiveTab: (tab: string) => void;
+}
+
+const Dashboard = ({ setActiveTab }: DashboardProps) => {
   const { ingredients, usageHistory, loading } = useIngredients();
 
   if (loading) {
@@ -63,8 +67,15 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
+          const isClickable = stat.title === 'Total Bahan Baku';
           return (
-            <div key={index} className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+            <div 
+              key={index} 
+              className={`bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300 ${
+                isClickable ? 'cursor-pointer hover:scale-105 transition-transform' : ''
+              }`}
+              onClick={isClickable ? () => setActiveTab('ingredients') : undefined}
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className={`${stat.color} p-3 rounded-lg`}>
                   <Icon className="h-6 w-6 text-white" />

@@ -22,7 +22,7 @@ const AppContent = () => {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
         <Header activeTab={activeTab} setActiveTab={setActiveTab} />
         <main className="container mx-auto px-4 py-8">
-          {activeTab === 'dashboard' && <Dashboard />}
+          {activeTab === 'dashboard' && <Dashboard setActiveTab={setActiveTab} />}
           {activeTab === 'ingredients' && <IngredientManager />}
           {activeTab === 'calculator' && <PortionCalculator />}
           {activeTab === 'analytics' && <Analytics />}
