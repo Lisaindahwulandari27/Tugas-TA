@@ -223,7 +223,137 @@ const IngredientManager = () => {
         </div>
       )}
 
+      {/* Tabel Bahan Pentol/Bakso */}
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-orange-50 px-6 py-4 border-b">
+          <h3 className="text-lg font-semibold text-gray-800">Bahan Pentol/Bakso</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Satuan</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga per Satuan</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah per Porsi</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya per Porsi</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {ingredients.filter(ingredient => ingredient.category === 'Bahan Pentol/Bakso').map((ingredient) => (
+                <tr key={ingredient.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {ingredient.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ingredient.unit}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    Rp {ingredient.costPerUnit.toLocaleString('id-ID')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {ingredient.amountPerPortion} {ingredient.unit}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                    Rp {(ingredient.costPerUnit * ingredient.amountPerPortion).toLocaleString('id-ID')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => startEdit(ingredient)}
+                        className="text-blue-600 hover:text-blue-800"
+                        title="Edit"
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(ingredient.id)}
+                        className="text-red-600 hover:text-red-800"
+                        title="Hapus"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {ingredients.filter(ingredient => ingredient.category === 'Bahan Pentol/Bakso').length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            Belum ada data bahan pentol/bakso. Tambahkan bahan baku pertama Anda!
+          </div>
+        )}
+      </div>
+
+      {/* Tabel Bahan Kuah */}
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-blue-50 px-6 py-4 border-b">
+          <h3 className="text-lg font-semibold text-gray-800">Bahan Kuah</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Satuan</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga per Satuan</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jumlah per Porsi</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Biaya per Porsi</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {ingredients.filter(ingredient => ingredient.category === 'Bahan Kuah').map((ingredient) => (
+                <tr key={ingredient.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {ingredient.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{ingredient.unit}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    Rp {ingredient.costPerUnit.toLocaleString('id-ID')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {ingredient.amountPerPortion} {ingredient.unit}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                    Rp {(ingredient.costPerUnit * ingredient.amountPerPortion).toLocaleString('id-ID')}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => startEdit(ingredient)}
+                        className="text-blue-600 hover:text-blue-800"
+                        title="Edit"
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(ingredient.id)}
+                        className="text-red-600 hover:text-red-800"
+                        title="Hapus"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {ingredients.filter(ingredient => ingredient.category === 'Bahan Kuah').length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            Belum ada data bahan kuah. Tambahkan bahan kuah pertama Anda!
+          </div>
+        )}
+      </div>
+
+      {/* Tabel Pelengkap & Bumbu */}
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-green-50 px-6 py-4 border-b">
+          <h3 className="text-lg font-semibold text-gray-800">Pelengkap & Bumbu</h3>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50">
@@ -238,7 +368,7 @@ const IngredientManager = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {ingredients.map((ingredient) => (
+              {ingredients.filter(ingredient => ingredient.category === 'Pelengkap' || ingredient.category === 'Bumbu').map((ingredient) => (
                 <tr key={ingredient.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {ingredient.name}
@@ -281,9 +411,9 @@ const IngredientManager = () => {
             </tbody>
           </table>
         </div>
-        {ingredients.length === 0 && (
+        {ingredients.filter(ingredient => ingredient.category === 'Pelengkap' || ingredient.category === 'Bumbu').length === 0 && (
           <div className="text-center py-8 text-gray-500">
-            Belum ada data bahan baku. Tambahkan bahan baku pertama Anda!
+            Belum ada data pelengkap & bumbu. Tambahkan bahan pertama Anda!
           </div>
         )}
       </div>
