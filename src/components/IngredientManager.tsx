@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Loader2 } from 'lucide-react';
 import { useIngredients, Ingredient } from '../contexts/IngredientContext';
 import { useToast } from "@/hooks/use-toast";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const IngredientManager = () => {
   const { ingredients, addIngredient, updateIngredient, deleteIngredient, loading } = useIngredients();
@@ -229,8 +230,50 @@ const IngredientManager = () => {
           <p>Tambahkan bahan baku pertama Anda!</p>
         </div>
       ) : (
-        <div className="text-center py-8 text-gray-500">
-          <p>Data bahan baku telah tersimpan. Gunakan tombol "Tambah Bahan Baku" untuk menambah item baru.</p>
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nama</TableHead>
+                <TableHead>Kategori</TableHead>
+                <TableHead>Satuan</TableHead>
+                <TableHead>Harga per Satuan</TableHead>
+                <TableHead>Jumlah per Porsi</TableHead>
+                <TableHead>Biaya per Porsi</TableHead>
+                <TableHead>Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {ingredients.map((ingredient) => (
+                <TableRow key={ingredient.id}>
+                  <TableCell className="font-medium">{ingredient.name}</TableCell>
+                  <TableCell>{ingredient.category}</TableCell>
+                  <TableCell>{ingredient.unit}</TableCell>
+                  <TableCell>Rp {ingredient.costPerUnit.toLocaleString('id-ID')}</TableCell>
+                  <TableCell>{ingredient.amountPerPortion}</TableCell>
+                  <TableCell>Rp {(ingredient.costPerUnit * ingredient.amountPerPortion).toLocaleString('id-ID')}</TableCell>
+                  <TableCell>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => startEdit(ingredient)}
+                        className="text-blue-600 hover:text-blue-800 p-1"
+                        disabled={submitting}
+                      >
+                        <Edit2 className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(ingredient.id)}
+                        className="text-red-600 hover:text-red-800 p-1"
+                        disabled={submitting}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>
