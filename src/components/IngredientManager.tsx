@@ -16,10 +16,10 @@ const IngredientManager = () => {
     unit: '',
     costPerUnit: 0,
     amountPerPortion: 0,
-    category: 'Bahan Pentol/Bakso'
+    category: 'Utama'
   });
 
-  const categories = ['Bahan Pentol/Bakso', 'Bahan Kuah', 'Pelengkap', 'Bumbu'];
+  const categories = ['Utama', 'Karbohidrat', 'Kuah', 'Bumbu', 'Pelengkap', 'Sayur'];
   const units = ['gram', 'ml', 'buah', 'kg', 'liter', 'sdm', 'sdt'];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,7 +60,7 @@ const IngredientManager = () => {
       unit: '',
       costPerUnit: 0,
       amountPerPortion: 0,
-      category: 'Bahan Pentol/Bakso'
+      category: 'Utama'
     });
   };
 
