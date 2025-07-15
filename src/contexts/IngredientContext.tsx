@@ -107,6 +107,46 @@ export const IngredientProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   useEffect(() => {
     refreshData();
+
+    // Setup realtime subscription untuk usage_history
+    const usageHistoryChannel = supabase
+      .channel('usage_history_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'usage_history'
+        },
+        () => {
+          // Refresh data ketika ada perubahan pada usage_history
+          fetchUsageHistory();
+        }
+      )
+      .subscribe();
+
+    // Setup realtime subscription untuk ingredients
+    const ingredientsChannel = supabase
+      .channel('ingredients_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'ingredients'
+        },
+        () => {
+          // Refresh data ketika ada perubahan pada ingredients
+          fetchIngredients();
+        }
+      )
+      .subscribe();
+
+    // Cleanup function
+    return () => {
+      supabase.removeChannel(usageHistoryChannel);
+      supabase.removeChannel(ingredientsChannel);
+    };
   }, []);
 
   const addIngredient = async (ingredient: Omit<Ingredient, 'id'>) => {
