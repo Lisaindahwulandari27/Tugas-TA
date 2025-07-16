@@ -4,6 +4,7 @@ import { Plus, Edit2, Trash2, Save, X, Loader2 } from 'lucide-react';
 import { useIngredients, Ingredient } from '../contexts/IngredientContext';
 import { useToast } from "@/hooks/use-toast";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { BaksoIngredientsSeeder } from './BaksoIngredientsSeeder';
 
 const IngredientManager = () => {
   const { ingredients, addIngredient, updateIngredient, deleteIngredient, loading } = useIngredients();
@@ -225,9 +226,12 @@ const IngredientManager = () => {
       )}
 
       {ingredients.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-gray-500 space-y-4">
           <p className="text-lg">Belum ada data bahan baku.</p>
           <p>Tambahkan bahan baku pertama Anda!</p>
+          <div className="max-w-md mx-auto">
+            <BaksoIngredientsSeeder />
+          </div>
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
