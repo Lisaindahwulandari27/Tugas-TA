@@ -22,7 +22,7 @@ const Dashboard = ({ setActiveTab }: DashboardProps) => {
   const totalIngredients = ingredients.length;
   const totalPortionsToday = usageHistory.length > 0 ? usageHistory[0].portions : 0;
   const avgCostPerPortion = usageHistory.length > 0 
-    ? usageHistory.reduce((sum, record) => sum + (record.totalCost / record.portions), 0) / usageHistory.length 
+    ? usageHistory[0].totalCost / usageHistory[0].portions 
     : 0;
   const totalRevenue = usageHistory.reduce((sum, record) => sum + record.totalCost, 0);
 
