@@ -251,11 +251,17 @@ const IngredientManager = () => {
               {ingredients.map((ingredient) => (
                 <TableRow key={ingredient.id}>
                   <TableCell className="font-medium">{ingredient.name}</TableCell>
-                  <TableCell>{ingredient.category}</TableCell>
+                  <TableCell>
+                    <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                      {ingredient.category}
+                    </span>
+                  </TableCell>
                   <TableCell>{ingredient.unit}</TableCell>
                   <TableCell>Rp {ingredient.costPerUnit.toLocaleString('id-ID')}</TableCell>
-                  <TableCell>{ingredient.amountPerPortion}</TableCell>
-                  <TableCell>Rp {(ingredient.costPerUnit * ingredient.amountPerPortion).toLocaleString('id-ID')}</TableCell>
+                  <TableCell>{ingredient.amountPerPortion} {ingredient.unit}</TableCell>
+                  <TableCell className="font-semibold text-green-600">
+                    Rp {(ingredient.costPerUnit * ingredient.amountPerPortion).toLocaleString('id-ID')}
+                  </TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
                       <button
