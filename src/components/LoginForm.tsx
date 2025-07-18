@@ -247,15 +247,6 @@ const LoginForm = ({ onLoginSuccess }: LoginFormProps) => {
             </button>
           </div>
 
-          {!isRegisterMode && (
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600 font-medium mb-2">Demo Akun:</p>
-              <div className="text-xs text-gray-500">
-                <p>Admin: admin@baksoadzkia.com</p>
-                <p>Staff: staff@baksoadzkia.com</p>
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>
