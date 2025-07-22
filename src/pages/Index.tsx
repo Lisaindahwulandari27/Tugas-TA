@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Dashboard from '../components/Dashboard';
 import IngredientManager from '../components/IngredientManager';
 import PortionCalculator from '../components/PortionCalculator';
-import Analytics from '../components/Analytics';
+
 import LoginForm from '../components/LoginForm';
 import { IngredientProvider } from '../contexts/IngredientContext';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
@@ -25,7 +25,6 @@ const AppContent = () => {
           {activeTab === 'dashboard' && <Dashboard setActiveTab={setActiveTab} />}
           {activeTab === 'ingredients' && <IngredientManager />}
           {activeTab === 'calculator' && <PortionCalculator />}
-          {activeTab === 'analytics' && <Analytics />}
         </main>
       </div>
     </IngredientProvider>

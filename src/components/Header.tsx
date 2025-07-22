@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Package, Calculator, BarChart3, LogOut, User } from 'lucide-react';
+import { Package, Calculator, LogOut, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '../contexts/AuthContext';
 
@@ -16,7 +16,6 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
     { id: 'dashboard', label: 'Dashboard', icon: Package },
     { id: 'ingredients', label: 'Bahan Baku', icon: Package },
     { id: 'calculator', label: 'Kalkulator', icon: Calculator },
-    { id: 'analytics', label: 'Analisis', icon: BarChart3 },
   ];
 
   const handleLogout = () => {
