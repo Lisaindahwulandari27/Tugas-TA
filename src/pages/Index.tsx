@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Dashboard from '../components/Dashboard';
 import IngredientManager from '../components/IngredientManager';
 import PortionCalculator from '../components/PortionCalculator';
+import TransactionManager from '../components/TransactionManager';
 
 import LoginForm from '../components/LoginForm';
 import { IngredientProvider } from '../contexts/IngredientContext';
@@ -23,6 +24,7 @@ const AppContent = () => {
         <Header activeTab={activeTab} setActiveTab={setActiveTab} />
         <main className="container mx-auto px-4 py-8">
           {activeTab === 'dashboard' && <Dashboard setActiveTab={setActiveTab} />}
+          {activeTab === 'transactions' && <TransactionManager />}
           {activeTab === 'ingredients' && <IngredientManager />}
           {activeTab === 'calculator' && <PortionCalculator />}
         </main>

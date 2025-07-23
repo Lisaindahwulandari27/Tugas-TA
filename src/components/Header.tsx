@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Package, Calculator, LogOut, User } from 'lucide-react';
+import { Package, Calculator, LogOut, User, Receipt } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '../contexts/AuthContext';
 
@@ -14,6 +14,7 @@ const Header = ({ activeTab, setActiveTab }: HeaderProps) => {
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: Package },
+    { id: 'transactions', label: 'Transaksi', icon: Receipt },
     { id: 'ingredients', label: 'Bahan Baku', icon: Package },
     { id: 'calculator', label: 'Kalkulator', icon: Calculator },
   ];

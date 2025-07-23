@@ -47,6 +47,51 @@ export type Database = {
         }
         Relationships: []
       }
+      transactions: {
+        Row: {
+          created_at: string
+          customer_name: string | null
+          discount: number | null
+          id: string
+          items: Json
+          notes: string | null
+          payment_method: string
+          served_by: string | null
+          subtotal: number
+          tax: number | null
+          total_amount: number
+          transaction_date: string
+        }
+        Insert: {
+          created_at?: string
+          customer_name?: string | null
+          discount?: number | null
+          id?: string
+          items: Json
+          notes?: string | null
+          payment_method?: string
+          served_by?: string | null
+          subtotal: number
+          tax?: number | null
+          total_amount: number
+          transaction_date?: string
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string | null
+          discount?: number | null
+          id?: string
+          items?: Json
+          notes?: string | null
+          payment_method?: string
+          served_by?: string | null
+          subtotal?: number
+          tax?: number | null
+          total_amount?: number
+          transaction_date?: string
+        }
+        Relationships: []
+      }
       usage_history: {
         Row: {
           created_at: string
