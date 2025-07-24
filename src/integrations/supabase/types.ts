@@ -28,7 +28,7 @@ export type Database = {
         Insert: {
           amount_per_portion: number
           category: string
-          cost_per_unit: number
+          cost_per_unit?: number
           created_at?: string
           id?: string
           name: string
